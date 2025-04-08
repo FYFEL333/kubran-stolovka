@@ -1,0 +1,281 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>СТОЛОВАЯ КУБРАНИ</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      scroll-behavior: smooth;
+      background: #000;
+      color: white;
+    }
+
+    body {
+      padding-top: 70px;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #111;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 10px;
+      border-bottom: 1px solid #333;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 20px;
+      background: linear-gradient(90deg, #ff0000, #770000);
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    nav a:hover {
+      opacity: 0.8;
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #000, #111);
+      text-align: center;
+      padding: 40px 20px 20px;
+    }
+
+    header h1 {
+      font-size: 36px;
+      background: linear-gradient(90deg, #ff0000, #ffffff);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      animation: glow 5s infinite alternate;
+    }
+
+    @keyframes glow {
+      0% { text-shadow: 0 0 5px #ff0000; }
+      100% { text-shadow: 0 0 20px #ff3333; }
+    }
+
+    section {
+      padding: 40px 20px;
+      max-width: 600px;
+      margin: 0 auto;
+      border-bottom: 1px solid #333;
+    }
+
+    section h2 {
+      font-size: 24px;
+      background: linear-gradient(90deg, #ff0000, #fff);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 20px;
+    }
+
+    .dish {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    .dish h3 {
+      margin: 0 0 5px;
+      color: #ff5555;
+    }
+
+    .dish p {
+      margin: 0;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    .dish span {
+      display: block;
+      margin-top: 5px;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .dish button {
+      margin-top: 10px;
+      padding: 6px 12px;
+      background: #ff3333;
+      border: none;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .dish button:hover {
+      background: #cc0000;
+    }
+
+    #cartModal {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #111;
+      border: 1px solid #444;
+      padding: 20px;
+      border-radius: 10px;
+      z-index: 2000;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    #cartModal h3 {
+      margin-top: 0;
+      color: #fff;
+    }
+
+    #cartItems {
+      font-size: 14px;
+      color: #ddd;
+      margin-bottom: 15px;
+    }
+
+    #cartModal input, #cartModal button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: none;
+    }
+
+    #cartModal input {
+      background: #222;
+      color: white;
+    }
+
+    #cartModal button {
+      background: #ff0000;
+      color: white;
+    }
+
+    #cartModal button:hover {
+      background: #cc0000;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#soups">Супы</a>
+    <a href="#hot">Горячее</a>
+    <a href="#salads">Салаты</a>
+    <a href="#drinks">Напитки</a>
+    <a href="#" onclick="toggleCart()">Корзина</a>
+  </nav>
+
+  <header>
+    <h1>СТОЛОВАЯ КУБРАНИ</h1>
+  </header>
+
+  <section id="soups">
+    <h2>Супы</h2>
+    <div class="dish">
+      <h3>Борщ</h3>
+      <p>Классический борщ с говядиной</p>
+      <span>180 ₽</span>
+      <button onclick="addToCart('Борщ', 180)">В корзину</button>
+    </div>
+    <div class="dish">
+      <h3>Куриный суп</h3>
+      <p>Бульон с лапшой и курицей</p>
+      <span>150 ₽</span>
+      <button onclick="addToCart('Куриный суп', 150)">В корзину</button>
+    </div>
+  </section>
+
+  <section id="hot">
+    <h2>Горячее</h2>
+    <div class="dish">
+      <h3>Пюре с котлетой</h3>
+      <p>Картофельное пюре с куриной котлетой</p>
+      <span>220 ₽</span>
+      <button onclick="addToCart('Пюре с котлетой', 220)">В корзину</button>
+    </div>
+  </section>
+
+  <section id="salads">
+    <h2>Салаты</h2>
+    <div class="dish">
+      <h3>Оливье</h3>
+      <p>Салат с ветчиной и майонезом</p>
+      <span>120 ₽</span>
+      <button onclick="addToCart('Оливье', 120)">В корзину</button>
+    </div>
+  </section>
+
+  <section id="drinks">
+    <h2>Напитки</h2>
+    <div class="dish">
+      <h3>Компот</h3>
+      <p>Домашний компот из сухофруктов</p>
+      <span>50 ₽</span>
+      <button onclick="addToCart('Компот', 50)">В корзину</button>
+    </div>
+  </section>
+
+  <div id="cartModal">
+    <h3>Ваша корзина</h3>
+    <div id="cartItems"></div>
+    <input type="text" id="name" placeholder="Ваше имя" />
+    <input type="tel" id="phone" placeholder="Телефон" />
+    <button onclick="submitOrder()">Оформить заказ</button>
+  </div>
+
+  <script>
+    let cart = [];
+
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      alert(name + " добавлен в корзину!");
+    }
+
+    function toggleCart() {
+      const modal = document.getElementById("cartModal");
+      const items = document.getElementById("cartItems");
+      if (modal.style.display === "none" || modal.style.display === "") {
+        items.innerHTML = cart.map(item => `• ${item.name} — ${item.price}₽`).join('<br>');
+        modal.style.display = "block";
+      } else {
+        modal.style.display = "none";
+      }
+    }
+
+    function submitOrder() {
+      const name = document.getElementById("name").value;
+      const phone = document.getElementById("phone").value;
+      if (!name || !phone) {
+        alert("Пожалуйста, заполните имя и телефон.");
+        return;
+      }
+      alert("Спасибо за заказ, " + name + "! Мы свяжемся с вами по номеру: " + phone);
+      cart = [];
+      document.getElementById("cartModal").style.display = "none";
+    }
+  </script>
+
+</body>
+</html>
