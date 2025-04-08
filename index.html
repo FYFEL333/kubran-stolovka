@@ -16,7 +16,7 @@
     }
 
     body {
-      padding-top: 70px;
+      padding-top: 80px;
     }
 
     nav {
@@ -26,14 +26,14 @@
       right: 0;
       background: #111;
       z-index: 1000;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
+      overflow-x: auto;
+      white-space: nowrap;
       padding: 10px;
       border-bottom: 1px solid #333;
     }
 
     nav a {
+      display: inline-block;
       color: white;
       text-decoration: none;
       padding: 8px 14px;
@@ -41,20 +41,27 @@
       background: linear-gradient(90deg, #ff0000, #770000);
       font-weight: bold;
       font-size: 14px;
+      margin-right: 10px;
     }
 
     nav a:hover {
       opacity: 0.8;
     }
 
+    nav a#cartBtn::after {
+      content: attr(data-count);
+      display: inline-block;
+      background: #fff;
+      color: #000;
+      font-size: 12px;
+      border-radius: 50%;
+      padding: 2px 6px;
+      margin-left: 6px;
+    }
+
     header {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #000, #111);
       text-align: center;
-      padding: 40px 20px 20px;
+      padding: 20px;
     }
 
     header h1 {
@@ -72,10 +79,9 @@
     }
 
     section {
-      padding: 40px 20px;
+      padding: 60px 20px 30px;
       max-width: 600px;
       margin: 0 auto;
-      border-bottom: 1px solid #333;
     }
 
     section h2 {
@@ -130,7 +136,7 @@
     #cartModal {
       display: none;
       position: fixed;
-      top: 60px;
+      top: 80px;
       left: 50%;
       transform: translateX(-50%);
       background: #111;
@@ -175,6 +181,19 @@
     #cartModal button:hover {
       background: #cc0000;
     }
+
+    #toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #222;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      display: none;
+      z-index: 3000;
+    }
   </style>
 </head>
 <body>
@@ -184,57 +203,32 @@
     <a href="#hot">Горячее</a>
     <a href="#salads">Салаты</a>
     <a href="#drinks">Напитки</a>
-    <a href="#" onclick="toggleCart()">Корзина</a>
+    <a href="#starters">Закуски</a>
+    <a href="#sides">Гарниры</a>
+    <a href="#bake">Выпечка</a>
+    <a href="#desserts">Десерты</a>
+    <a href="#" id="cartBtn" onclick="toggleCart()" data-count="0">Корзина</a>
   </nav>
 
   <header>
     <h1>СТОЛОВАЯ КУБРАНИ</h1>
   </header>
 
-  <section id="soups">
-    <h2>Супы</h2>
-    <div class="dish">
-      <h3>Борщ</h3>
-      <p>Классический борщ с говядиной</p>
-      <span>180 ₽</span>
-      <button onclick="addToCart('Борщ', 180)">В корзину</button>
-    </div>
-    <div class="dish">
-      <h3>Куриный суп</h3>
-      <p>Бульон с лапшой и курицей</p>
-      <span>150 ₽</span>
-      <button onclick="addToCart('Куриный суп', 150)">В корзину</button>
-    </div>
+  <!-- Категории с блюдами -->
+  <section id="soups"><h2>Супы</h2>
+    <div class="dish"><h3>Борщ</h3><p>Свекольный, с мясом</p><span>180 ₽</span><button onclick="addToCart('Борщ', 180)">В корзину</button></div>
+    <div class="dish"><h3>Солянка</h3><p>С копчёностями</p><span>190 ₽</span><button onclick="addToCart('Солянка', 190)">В корзину</button></div>
+    <div class="dish"><h3>Щи</h3><p>Кислые щи с капустой</p><span>160 ₽</span><button onclick="addToCart('Щи', 160)">В корзину</button></div>
+    <div class="dish"><h3>Уха</h3><p>Рыбный суп</p><span>200 ₽</span><button onclick="addToCart('Уха', 200)">В корзину</button></div>
+    <div class="dish"><h3>Куриный</h3><p>С лапшой и курицей</p><span>150 ₽</span><button onclick="addToCart('Куриный', 150)">В корзину</button></div>
   </section>
 
-  <section id="hot">
-    <h2>Горячее</h2>
-    <div class="dish">
-      <h3>Пюре с котлетой</h3>
-      <p>Картофельное пюре с куриной котлетой</p>
-      <span>220 ₽</span>
-      <button onclick="addToCart('Пюре с котлетой', 220)">В корзину</button>
-    </div>
-  </section>
-
-  <section id="salads">
-    <h2>Салаты</h2>
-    <div class="dish">
-      <h3>Оливье</h3>
-      <p>Салат с ветчиной и майонезом</p>
-      <span>120 ₽</span>
-      <button onclick="addToCart('Оливье', 120)">В корзину</button>
-    </div>
-  </section>
-
-  <section id="drinks">
-    <h2>Напитки</h2>
-    <div class="dish">
-      <h3>Компот</h3>
-      <p>Домашний компот из сухофруктов</p>
-      <span>50 ₽</span>
-      <button onclick="addToCart('Компот', 50)">В корзину</button>
-    </div>
+  <section id="hot"><h2>Горячее</h2>
+    <div class="dish"><h3>Плов</h3><p>С говядиной</p><span>250 ₽</span><button onclick="addToCart('Плов', 250)">В корзину</button></div>
+    <div class="dish"><h3>Котлета с пюре</h3><p>Куриная</p><span>220 ₽</span><button onclick="addToCart('Котлета с пюре', 220)">В корзину</button></div>
+    <div class="dish"><h3>Макароны по-флотски</h3><p>С фаршем</p><span>180 ₽</span><button onclick="addToCart('Макароны по-флотски', 180)">В корзину</button></div>
+    <div class="dish"><h3>Жаркое</h3><p>С картошкой</p><span>210 ₽</span><button onclick="addToCart('Жаркое', 210)">В корзину</button></div>
+    <div class="dish"><h3>Пельмени</h3><p>Со сметаной</p><span>200 ₽</span><button onclick="addToCart('Пельмени', 200)">В корзину</button></div>
   </section>
 
   <div id="cartModal">
@@ -243,37 +237,63 @@
     <input type="text" id="name" placeholder="Ваше имя" />
     <input type="tel" id="phone" placeholder="Телефон" />
     <button onclick="submitOrder()">Оформить заказ</button>
+    <button onclick="clearCart()">Очистить</button>
   </div>
+
+  <div id="toast"></div>
 
   <script>
     let cart = [];
 
     function addToCart(name, price) {
       cart.push({ name, price });
-      alert(name + " добавлен в корзину!");
+      updateCartCount();
+      showToast(`${name} добавлен в корзину`);
+    }
+
+    function updateCartCount() {
+      document.getElementById("cartBtn").setAttribute("data-count", cart.length);
     }
 
     function toggleCart() {
       const modal = document.getElementById("cartModal");
       const items = document.getElementById("cartItems");
-      if (modal.style.display === "none" || modal.style.display === "") {
-        items.innerHTML = cart.map(item => `• ${item.name} — ${item.price}₽`).join('<br>');
-        modal.style.display = "block";
+      if (cart.length === 0) {
+        items.innerHTML = "Корзина пуста.";
       } else {
-        modal.style.display = "none";
+        let total = 0;
+        items.innerHTML = cart.map(item => {
+          total += item.price;
+          return `• ${item.name} — ${item.price}₽`;
+        }).join('<br>') + `<br><br><strong>Итого: ${total}₽</strong>`;
       }
+      modal.style.display = modal.style.display === "block" ? "none" : "block";
     }
 
     function submitOrder() {
       const name = document.getElementById("name").value;
       const phone = document.getElementById("phone").value;
       if (!name || !phone) {
-        alert("Пожалуйста, заполните имя и телефон.");
+        showToast("Введите имя и телефон.");
         return;
       }
-      alert("Спасибо за заказ, " + name + "! Мы свяжемся с вами по номеру: " + phone);
+      showToast(`Спасибо, ${name}! Ваш заказ принят.`);
       cart = [];
+      updateCartCount();
       document.getElementById("cartModal").style.display = "none";
+    }
+
+    function clearCart() {
+      cart = [];
+      updateCartCount();
+      toggleCart();
+    }
+
+    function showToast(text) {
+      const toast = document.getElementById("toast");
+      toast.innerText = text;
+      toast.style.display = "block";
+      setTimeout(() => { toast.style.display = "none"; }, 2000);
     }
   </script>
 
